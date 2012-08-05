@@ -1,5 +1,5 @@
 .DS_Store
-time_tracker.sqlite
+*.sqlite
 /db_backups/
 /node_modules/
 /dist/
