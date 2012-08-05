@@ -1,0 +1,5 @@
+
+(def (start-server)
+  (def port 3001)
+  (.listen app port)
+  (puts (concat "Server listening on port " port)))

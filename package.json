@@ -1,0 +1,22 @@
+{
+    "name": "time-tracker"
+  , "description": "..."
+  , "keywords": []
+  , "version": "0.0.1"
+  , "main": "dist/main.js"
+  , "author": "Paul Harper <benekastah@gmail.com>"
+  , "repository": {
+      "type": "git"
+    , "url": ""
+  }
+  , "dependencies": {
+      "express": "2.x.x",
+      "sqlite3": "2.x.x",
+      "jade": "0.x.x",
+      "mkdirp": "0.x.x"
+  }
+  , "engines": {
+      "node": "0.8.x"
+  }
+  , "preferGlobal": true
+}

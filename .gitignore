@@ -1,0 +1,5 @@
+.DS_Store
+time_tracker.sqlite
+/db_backups/
+/node_modules/
+/dist/

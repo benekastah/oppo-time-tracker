@@ -1,0 +1,8 @@
+(include "node.oppo")
+
+(defmacro (defroute method path args ...body)
+  `(. ,method app ,path (lambda ,args ,@body)))
+
+(defmacro (defroutes ...routes)
+  (let (r (map (lambda (rt) (push-l rt 'defroute)) routes))
+    `(do ,@r)))

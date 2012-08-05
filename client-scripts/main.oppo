@@ -1,0 +1,87 @@
+
+(def (display-date date)
+  (let (d (new Date date))
+    (concat "" (+ 1 (.getMonth d)) "/" (.getDate d) "/" (.getFullYear d) " " (.getHours d) ":" (.getMinutes d))))
+
+(def (display-time-spent n)
+  (let (seconds (/ n 1000)
+        minutes (/ seconds 60)
+        hours (/ minutes 60))
+    (concat "" (.toFixed hours 1) " hours")))
+
+(def (reload) (.reload location))
+
+(def (set-editable evt)
+  (let (el ($ (js-eval :this))
+        row (.parents el "tr:first")
+        time-in ($ ".time-in" row)
+        time-out ($ ".time-out" row)
+        in (.data time-in :value)
+        out (.data time-out :value))
+    (.show ($ ".save-edits" row))
+    (.show ($ ".cancel-edits" row))
+    (.hide ($ ".edit-timestamps" row))
+    (.attr (.add time-in time-out) {:contenteditable true})
+    (.html time-in in)
+    (.html time-out out)))
+
+(def (edit-timestamps evt)
+  (let (el ($ (js-eval "this"))
+        row (.parents el "tr:first")
+        time-in ($ ".time-in" row)
+        time-out ($ ".time-out" row)
+        id (.data row :id)
+        in (encodeURIComponent (.html time-in))
+        out (encodeURIComponent (.html time-out)))
+    (puts id in out)
+    (.post $
+      (concat "/update-timestamps/" id "/" in "/" out)
+      reload)))
+
+(def (delete-timestamps evt)
+  (let (really? (confirm "Are you sure you want to delete this entry? This cannot be undone.")
+        el ($ (js-eval :this))
+        row (.parents el "tr:first")
+        id (.data row :id))    
+    (if really?
+      (.post $
+        (concat "/delete-timestamps/" id)
+        reload))))
+
+(def (create-project evt)
+  (let (project-name (prompt "Name your project:"))
+    (.post $
+      (concat "/create-project/" project-name)
+      reload)))
+
+(def (delete-project evt)
+  (let (really? (confirm "Are you sure you want to delete this project? This cannot be undone.")
+        el ($ (js-eval :this))
+        id (.data el :id))
+    (if really?
+      (.post $
+        (concat "/delete-project/" id)
+        reload))))
+
+(.ready ($ document) (lambda ()
+  (def time-in-out ($ ".time-in, .time-out"))
+  (.each time-in-out (lambda (index el)
+    (let (d (@el :innerHTML)
+          $el ($ el))
+      (if d
+        (do
+          (.html $el (display-date d))
+          (.attr $el "data-value" d)))
+      nil)))
+  (def time-spent ($ ".total-time-spent"))
+  (.each time-spent (lambda ()
+    (let (el ($ (js-eval :this)))
+      (.html el (display-time-spent (.html el))))))
+
+  (.click ($ ".edit-timestamps") set-editable)
+  (.click ($ ".delete-timestamps") delete-timestamps)
+  (.click ($ ".save-edits") edit-timestamps)
+  (.click ($ ".cancel-edits") reload)
+  (.click ($ "#create-project") create-project)
+  (.click ($ "button.delete-project") delete-project)))
+

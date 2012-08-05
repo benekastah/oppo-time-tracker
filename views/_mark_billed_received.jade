@@ -1,0 +1,6 @@
+
+form(method='post', action='/#{action}/#{project_id}')
+  input(type='hidden', name='set_to', value='#{Number(set_to)}')
+  - each timestamp in period
+    input(type='hidden', name='ids', value=timestamp.id)
+  button(type='submit')= submit_text

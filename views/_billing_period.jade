@@ -1,0 +1,19 @@
+- var all_billed = period.every(function (t) { return t.billed; });
+
+table
+  tr
+    th In
+    th Out
+  - each timestamp in period
+    != partial('timestamps', {timestamp: timestamp})
+
+p Total time spent:&nbsp;
+  span.total-time-spent= period.total_time_spent
+
+  - var billed_submit_text = all_billed ? "Mark as not billed" : "Mark as billed";
+  != partial('mark_billed_received', { action: "mark-billed", set_to: !all_billed, submit_text: billed_submit_text})
+
+  - if (all_billed)
+    - var all_received = period.every(function (t) { return t.money_received; });
+    - var received_submit_text = all_received ? "Mark as not received" : "Mark as received";
+    != partial('mark_billed_received', { action: "mark-money-received", set_to: !all_received, submit_text: received_submit_text })

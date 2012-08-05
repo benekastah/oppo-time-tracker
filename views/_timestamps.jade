@@ -1,0 +1,15 @@
+
+tr(data-id=timestamp.id, class="#{timestamp.billed ? 'billed' : 'bill-pending'} #{timestamp.money_received ? 'payment-received' : 'payment-pending'}")
+  td.time-in= new Date(timestamp.time_in).toISOString()
+  - if (timestamp.time_out)
+    td.time-out= new Date(timestamp.time_out).toISOString()
+  - else
+    td
+  td
+    button.edit-timestamps Edit
+  td
+    button.delete-timestamps Delete
+  td
+    button.save-edits Save
+  td
+    button.cancel-edits Cancel

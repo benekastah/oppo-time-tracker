@@ -1,0 +1,61 @@
+
+(defroutes
+  (get "/" (req res)
+    (get-projects (lambda (err projects)
+      (if err (raise err))
+      (.render res "index" {:projects projects}))))
+
+  (get "/:project_id" (req res)
+    (let (project-id (.param req :project_id))
+      (get-timestamps project-id 50 (lambda (err timestamps)
+        (if err (raise err))
+        (.render res "project" {:timestamps timestamps
+                                :project_id project-id
+                                :billing_periods (get-billing-periods timestamps)})))))
+
+  (post "/create-project/:display_name" (req res)
+    (create-project (.param req :display_name) (lambda (err)
+      (if err (raise err))
+      (.redirect res "/"))))
+
+  (post "/delete-project/:id" (req res)
+    (delete-project (.param req :id) (lambda (err)
+      (if err (raise err))
+      (.redirect res "/"))))
+
+  (post "/punch-in-out/:project_id" (req res)
+    (let (time (.now Date)
+          project-id (.param req :project_id)
+          punching-in (.param req :punching-in)
+          done (lambda (err)
+                (if (not= err nil) (raise err))
+                (.redirect res (concat "/" project-id))))
+      (if punching-in
+        (punch-in project-id time done)
+        (punch-out project-id time done))))
+
+  (post "/update-timestamps/:id/:time_in/:time_out" (req res)
+    (let (id (.param req :id)
+          in (Number (new Date (.param req :time_in)))
+          out (Number (new Date (.param req :time_out)))
+          done (lambda (err) (if (not= err nil) (raise err)) (.redirect res "/")))
+      (update-timestamp id in out done)))
+
+  (post "/delete-timestamps/:id" (req res)
+    (let (id (.param req :id)
+          done (lambda (err) (if (not= err nil) (raise err)) (.redirect res "/")))
+      (delete-timestamp id done)))
+
+  (post "/mark-billed/:project_id" (req res)
+    (let (ids (.param req :ids)
+          billed (.param req :set_to))
+      (mark-timestamps-billed billed ids (lambda (err)
+        (if err (raise err))
+        (.redirect res (concat "/" (.param req :project_id)))))))
+
+  (post "/mark-money-received/:project_id" (req res)
+    (let (ids (.param req :ids)
+          received (.param req :set_to))
+      (mark-timestamps-money-received received ids (lambda (err)
+        (if err (raise err))
+        (.redirect res (concat "/" (.param req :project_id))))))))

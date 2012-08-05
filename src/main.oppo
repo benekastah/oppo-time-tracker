@@ -1,0 +1,11 @@
+
+(include "lib/express.oppo")
+
+(require express)
+(def app (.createServer express))
+
+(include "config.oppo" "db.oppo" "time-tracker.oppo" "routes.oppo" "server.oppo")
+
+(def daily (* 24 60 60 1000))
+(db-backup daily)
+(setup-db start-server)

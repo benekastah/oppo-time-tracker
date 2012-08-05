@@ -1,0 +1,27 @@
+
+.save-edits, .cancel-edits {
+  display: none;
+}
+
+.billed {
+  background-color: none;
+  color: black;
+  font-weight: normal;
+}
+
+.payment-pending {
+  background-color: red;
+  font-weight: bold;
+}
+
+.payment-received {
+  color: green;
+  background-color: none;
+  font-weight: normal;
+}
+
+.bill-pending {
+  background-color: yellow;
+  color: black;
+  font-weight: normal;
+}

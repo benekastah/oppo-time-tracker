@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "-b" ];
+  then
+  bin/build
+fi
+node .

@@ -1,0 +1,11 @@
+
+h1 Projects
+
+- if (projects)
+  ul.projects
+    - each project in projects
+      li
+        a(href="/#{project.id}")= project.display_name
+        button.delete-project(type='submit', data-id='#{project.id}') Delete
+
+button#create-project Create project

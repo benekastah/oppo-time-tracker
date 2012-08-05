@@ -1,0 +1,4 @@
+
+(.set app "view engine" :jade)
+(.use app (.bodyParser express))
+(.use app ((js-eval "express.static") (concat __dirname "/../public")))

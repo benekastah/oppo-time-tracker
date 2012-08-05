@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+mkdir -p dist
+mkdir -p public/js
+
+node_modules/oppo/bin/oppo -bc src/main -o dist/main.js
+node_modules/oppo/bin/oppo -bc client-scripts -o public/js/main.js

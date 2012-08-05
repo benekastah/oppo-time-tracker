@@ -1,0 +1,3 @@
+(def -node-require require)
+(defmacro (require lib)
+  `(def ,(symbol lib) (-node-require ,(keyword lib))))

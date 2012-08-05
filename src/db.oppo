@@ -1,0 +1,105 @@
+(require fs)
+(rquire mkdirp)
+
+(require sqlite3)
+(.verbose sqlite3)
+
+(def db-file "time_tracker.sqlite")
+(def db (new (@sqlite3 'Database) db-file))
+
+(def (resolve-project-id project)
+  (if (object? project)
+    (@project :id)
+    project))
+
+(def (get-timestamps project limit cb)
+  (let (project-id (resolve-project-id project))
+    (.all db (concat "SELECT * FROM timestamps WHERE project_id = '" project-id "' LIMIT " limit) cb)))
+
+(def (get-projects cb)
+  (.all db "SELECT * FROM projects" cb))
+
+(def (create-project display-name cb)
+  (.run db (concat "INSERT INTO projects VALUES (null, '" display-name "')") cb))
+
+(def (delete-project project cb)
+  (let (project-id (resolve-project-id project))
+    (.run db (concat "DELETE FROM projects WHERE id = " project-id) (lambda (err)
+      (if err
+        (cb err)
+        (.run db (concat "DELETE FROM timestamps WHERE project_id = " project-id) cb))))))
+
+(def (punch-in project time cb)
+  (let (t (or time (.now Date))
+        project-id (resolve-project-id project))
+    (.run db (concat "INSERT INTO timestamps VALUES (null, " t ", null, 0, 0, " project-id ")") cb)))
+
+(def (punch-out project time cb)
+  (let (t (or time (.now Date))
+        project-id (resolve-project-id project))
+    (.get db (concat "SELECT * FROM timestamps WHERE project_id = '" project-id "' and time_out IS NULL ORDER BY id DESC LIMIT 1")
+      (lambda (err row)
+        (if (not= nil err) (raise err))
+        (let (id (and row (@row :id)))
+          (if id
+            (.run db (concat "UPDATE timestamps SET time_out = " t " WHERE id = " id) cb)
+            (raise "Nothing to punch out from"))
+          nil)))))
+
+(def (update-timestamp id time-in time-out cb)
+  (.run db (concat "UPDATE timestamps SET time_in = " time-in ", time_out = " time-out " WHERE id = " id) cb))
+
+(def (delete-timestamp id cb)
+  (.run db (concat "DELETE FROM timestamps WHERE id = " id) cb))
+
+(def (mark-timestamps-billed billed ids cb)
+  (.run db (concat "UPDATE timestamps SET billed = " (Number billed) " WHERE id in (" ids ")") (lambda (err)
+    (cond
+      err (cb err)
+      (not (Number billed)) (mark-timestamps-money-received #f ids cb)
+      :else (cb)))))
+
+(def (mark-timestamps-money-received received ids cb)
+  (.run db (concat "UPDATE timestamps SET money_received = " (Number received) " WHERE id in (" ids ")") cb))
+
+(def sql-db-setup "
+  CREATE TABLE IF NOT EXISTS timestamps (
+    id INTEGER PRIMARY KEY,
+    time_in INTEGER,
+    time_out INTEGER,
+    billed INTEGER,
+    money_received INTEGER,
+    project_id INTEGER,
+    FOREIGN KEY(project_id) REFERENCES projects(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS projects (
+    id INTEGER PRIMARY KEY,
+    display_name TEXT
+  );
+")
+
+(def (rec-setup-db sql-commands cb)
+  (let (cmd (first sql-commands)
+        next (lambda (err)
+              (if err (raise err))
+              (rec-setup-db (rest sql-commands) cb)))
+    (if (not (empty? sql-commands))
+      (if (and cmd (.test #/\S/ cmd))
+        (.run db cmd next)
+        (next))
+      (cb))))
+
+(def (setup-db cb)
+  (rec-setup-db (.split sql-db-setup ";") cb))
+
+(def (db-backup interval now)
+  (let (backup-fn (lambda ()
+                    (.readFile fs db-file (lambda (err data)
+                      (if err (raise err))
+                      (.writeFile fs (concat "db_backups/" (.now Date) "-" db-file) data)))))
+    (mkdirp "db_backups" (lambda (err)
+      (if err (raise err))
+      (if now (backup-fn))
+      (setInterval backup-fn interval)))))
+
