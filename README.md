@@ -1,7 +1,7 @@
 # oppo-time-tracker
 ============
 
-A simple time-tracking app built with [Oppo](http://benekastah.github.com/oppo), a dialect of lisp that transpiles to javascript. It is a web app that runs on [node.js](https://nodejs.org). Both client-side and server-side javascript were generated through Oppo.
+A simple time-tracking app built with [Oppo](https://github.com/benekastah/oppo), a dialect of lisp that transpiles to javascript. It is a web app that runs on [node.js](https://nodejs.org). Both client-side and server-side javascript were generated through Oppo.
 
 This app allows you to add projects and track how much time you have spent on them. It also allows you to track whether or not you have billed your client for time spent on a project and mark whether or not you have been paid for your work (for those of you who charge hourly). It groups time spent into two-week segments so it is easier to look at and work with. It stores all this information in a sqlite database, which is automatically backed up every 24 hours.
 
