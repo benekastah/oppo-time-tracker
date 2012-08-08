@@ -1,5 +1,5 @@
 (require fs)
-(rquire mkdirp)
+(require mkdirp)
 
 (require sqlite3)
 (.verbose sqlite3)
