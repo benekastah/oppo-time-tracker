@@ -3827,7 +3827,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }).call(this);
 
 };// Your program
-var program_a78d_h5r21ygh = null;
+var program_ixwh_h5r2jtij = null;
 
 
 // Oppo runtime
@@ -4393,11 +4393,11 @@ re_test = function (re, s) {
         };
 
 // Run the oppo program
-if (lemur.core.to_type(program_a78d_h5r21ygh) === 'function')
-  program_a78d_h5r21ygh();
+if (lemur.core.to_type(program_ixwh_h5r2jtij) === 'function')
+  program_ixwh_h5r2jtij();
 else
-  program_a78d_h5r21ygh;;// Your program
-var program_86r1_h5r21yfk = function () {
+  program_ixwh_h5r2jtij;;// Your program
+var program_9pf3_h5r2jthr = function () {
   var eval, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project;
 eval = __oppo_eval__;
   display_date = function (date) {
@@ -4421,33 +4421,36 @@ seconds = _$forwardslash_(n, 1000);
 };
   set_editable = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, _$in_, out, obj_2z2d_h5r21yft;
+  var el, row, time_in, time_out, description, _$in_, out, obj_5qs1_h5r2jthz;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
   time_out = $('.time-out', row);
+  description = $('.description', row);
   _$in_ = (time_in.data)('value');
   out = (time_out.data)('value');
   ($('.save-edits', row).show)();
   ($('.cancel-edits', row).show)();
   ($('.edit-timestamps', row).hide)();
-  ((time_in.add)(time_out).attr)((obj_2z2d_h5r21yft = { 'contenteditable': true }, obj_2z2d_h5r21yft));
+  ((time_in.add)(time_out, description).attr)((obj_5qs1_h5r2jthz = { 'contenteditable': true }, obj_5qs1_h5r2jthz));
   (time_in.html)(_$in_);
   return (time_out.html)(out);
 }).call(this);
 };
   edit_timestamps = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, id, _$in_, out;
+  var el, row, time_in, time_out, description, id, _$in_, out, desc;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
   time_out = $('.time-out', row);
+  description = $('.description', row);
   id = (row.data)('id');
   _$in_ = encodeURIComponent((time_in.html)());
   out = encodeURIComponent((time_out.html)());
+  desc = encodeURIComponent((description.html)());
   puts(id, _$in_, out);
-  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out), reload);
+  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out, '/', desc), reload);
 }).call(this);
 };
   delete_timestamps = function (evt) {
@@ -4508,7 +4511,7 @@ el = $(this);
 
 
 // Run the oppo program
-if (lemur.core.to_type(program_86r1_h5r21yfk) === 'function')
-  program_86r1_h5r21yfk();
+if (lemur.core.to_type(program_9pf3_h5r2jthr) === 'function')
+  program_9pf3_h5r2jthr();
 else
-  program_86r1_h5r21yfk;
+  program_9pf3_h5r2jthr;

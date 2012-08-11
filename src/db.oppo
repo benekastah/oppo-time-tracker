@@ -29,12 +29,16 @@
         (cb err)
         (.run db (concat "DELETE FROM timestamps WHERE project_id = " project-id) cb))))))
 
-(def (punch-in project time cb)
-  (let (t (or time (.now Date))
-        project-id (resolve-project-id project))
-    (.run db (concat "INSERT INTO timestamps VALUES (null, " t ", null, 0, 0, " project-id ")") cb)))
+(def (->sql-string x)
+  (str "'" (if (nil? x) "" x) "'"))
 
-(def (punch-out project time cb)
+(def (punch-in project time description cb)
+  (let (t (or time (.now Date))
+        project-id (resolve-project-id project)
+        description (->sql-string description))
+    (.run db (concat "INSERT INTO timestamps VALUES (null, " t ", null, 0, 0, " project-id ", " description ")") cb)))
+
+(def (punch-out project time description cb)
   (let (t (or time (.now Date))
         project-id (resolve-project-id project))
     (.get db (concat "SELECT * FROM timestamps WHERE project_id = '" project-id "' and time_out IS NULL ORDER BY id DESC LIMIT 1")
@@ -42,14 +46,14 @@
         (if (not= nil err) (raise err))
         (let (id (and row (@row :id)))
           (if id
-            (.run db (concat "UPDATE timestamps SET time_out = " t " WHERE id = " id) cb)
+            (.run db (concat "UPDATE timestamps SET time_out = " t ", description = " (->sql-string description) " WHERE id = " id) cb)
             (raise "Nothing to punch out from"))
           nil)))))
 
 (def (update-timestamp id time-in time-out description cb)
   (let (updates (filter identity [(and time-in (str "time_in = " time-in))
                                   (and time-out (str "time_out = " time-out))
-                                  (and description (str "description = " description))]))
+                                  (and description (str "description = " (->sql-string description)))]))
     (.run db (concat "UPDATE timestamps SET " updates " WHERE id = " id) cb)))
 
 (def (delete-timestamp id cb)

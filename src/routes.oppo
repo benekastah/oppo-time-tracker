@@ -26,13 +26,14 @@
   (post "/punch-in-out/:project_id" (req res)
     (let (time (.now Date)
           project-id (.param req :project_id)
-          punching-in (.param req :punching-in)
+          punching-in (Number (.param req :punching-in))
+          description (.param req :description)
           done (lambda (err)
                 (if (not= err nil) (raise err))
                 (.redirect res (concat "/" project-id))))
       (if punching-in
-        (punch-in project-id time done)
-        (punch-out project-id time done))))
+        (punch-in project-id time description done)
+        (punch-out project-id time description done))))
 
   (post "/update-timestamps/:id/:time_in/:time_out" (req res)
     (let (id (.param req :id)
