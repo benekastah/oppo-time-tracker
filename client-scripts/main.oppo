@@ -30,12 +30,14 @@
         row (.parents el "tr:first")
         time-in ($ ".time-in" row)
         time-out ($ ".time-out" row)
+        description ($ ".description" row)
         id (.data row :id)
         in (encodeURIComponent (.html time-in))
-        out (encodeURIComponent (.html time-out)))
+        out (encodeURIComponent (.html time-out))
+        desc (encodeURIComponent (.html description)))
     (puts id in out)
     (.post $
-      (concat "/update-timestamps/" id "/" in "/" out)
+      (concat "/update-timestamps/" id "/" in "/" out "/" desc)
       reload)))
 
 (def (delete-timestamps evt)

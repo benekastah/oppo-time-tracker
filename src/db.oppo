@@ -46,8 +46,11 @@
             (raise "Nothing to punch out from"))
           nil)))))
 
-(def (update-timestamp id time-in time-out cb)
-  (.run db (concat "UPDATE timestamps SET time_in = " time-in ", time_out = " time-out " WHERE id = " id) cb))
+(def (update-timestamp id time-in time-out description cb)
+  (let (updates (filter identity [(and time-in (str "time_in = " time-in))
+                                  (and time-out (str "time_out = " time-out))
+                                  (and description (str "description = " description))]))
+    (.run db (concat "UPDATE timestamps SET " updates " WHERE id = " id) cb)))
 
 (def (delete-timestamp id cb)
   (.run db (concat "DELETE FROM timestamps WHERE id = " id) cb))

@@ -38,8 +38,9 @@
     (let (id (.param req :id)
           in (Number (new Date (.param req :time_in)))
           out (Number (new Date (.param req :time_out)))
+          description (.param req :description)
           done (lambda (err) (if (not= err nil) (raise err)) (.redirect res "/")))
-      (update-timestamp id in out done)))
+      (update-timestamp id in out description done)))
 
   (post "/delete-timestamps/:id" (req res)
     (let (id (.param req :id)
