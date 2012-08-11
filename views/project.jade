@@ -2,6 +2,10 @@
 h1 Time Tracker
 
 - var punching_in = true;
+- if (timestamps)
+  - each timestamp in timestamps
+    - punching_in = timestamp.time_in && timestamp.time_out
+!= partial("punch_in_out", {punching_in: punching_in})
 
 ul.key
   li.bill-pending Not billed
@@ -9,14 +13,10 @@ ul.key
   li.payment-pending Payment pending
   li.payment-received Payment received
 
-- if (timestamps)
-  - each timestamp in timestamps
-    - punching_in = timestamp.time_in && timestamp.time_out
+hr
 
 - if (billing_periods)
   - each period in billing_periods
     != partial("billing_period", {period: period})
 
-form(action = "/punch-in-out/#{project_id}", method = "post")
-  input(type = "hidden", name = "punching-in", value = punching_in)
-  input(type = "submit", value = "Punch #{punching_in ? 'in' : 'out'}")
+!= partial("punch_in_out", {punching_in: punching_in})

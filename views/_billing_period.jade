@@ -17,3 +17,5 @@ p Total time spent:&nbsp;
     - var all_received = period.every(function (t) { return t.money_received; });
     - var received_submit_text = all_received ? "Mark as not received" : "Mark as received";
     != partial('mark_billed_received', { action: "mark-money-received", set_to: !all_received, submit_text: received_submit_text })
+
+hr

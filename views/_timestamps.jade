@@ -5,6 +5,7 @@ tr(data-id=timestamp.id, class="#{timestamp.billed ? 'billed' : 'bill-pending'} 
     td.time-out= new Date(timestamp.time_out).toISOString()
   - else
     td
+  td.description= timestamp.description
   td
     button.edit-timestamps Edit
   td

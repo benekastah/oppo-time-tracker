@@ -1,0 +1,5 @@
+
+form(id = "punch-in-out-form", action = "/punch-in-out/#{project_id}", method = "post")
+  input(type = "hidden", name = "punching-in", value = Number(!!punching_in))
+  input(type = "hidden", name = "description")
+  input(type = "submit", value = "Punch #{punching_in ? 'in' : 'out'}")
