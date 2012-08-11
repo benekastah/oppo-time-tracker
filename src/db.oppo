@@ -5,11 +5,11 @@
 (.verbose sqlite3)
 
 (def db-file "time_tracker.sqlite")
-(def db (new (@sqlite3 'Database) db-file))
+(def db (new (:Database sqlite3) db-file))
 
 (def (resolve-project-id project)
   (if (object? project)
-    (@project :id)
+    (:id project)
     project))
 
 (def (get-timestamps project limit cb)
@@ -40,14 +40,14 @@
     (.get db (concat "SELECT * FROM timestamps WHERE project_id = '" project-id "' and time_out IS NULL ORDER BY id DESC LIMIT 1")
       (lambda (err row)
         (if (not= nil err) (raise err))
-        (let (id (and row (@row :id)))
+        (let (id (and row (:id row)))
           (if id
             (.run db (concat "UPDATE timestamps SET time_out = " t " WHERE id = " id) cb)
             (raise "Nothing to punch out from"))
           nil)))))
 
 (def (update-timestamp id time-in time-out cb)
-  (.run db (concat "UPDATE timestamps SET time_in = " time-in ", time_out = " time-out " WHERE id = " id) cb))
+  (.run db (concat "UPDATE timestamps SET time_in = " (Number time-in) ", time_out = " (Number time-out) " WHERE id = " id) cb))
 
 (def (delete-timestamp id cb)
   (.run db (concat "DELETE FROM timestamps WHERE id = " id) cb))

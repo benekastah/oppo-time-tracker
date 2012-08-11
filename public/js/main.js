@@ -1053,9 +1053,9 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
         pair = pairs[_i];
         if (pair != null) {
           if (pair instanceof C.List) {
-            pair = pair.items;
+            pair.quoted = true;
           }
-          this.property_value_pairs.push(pair);
+          this.property_value_pairs.push(eval(pair._compile()));
         }
       }
     }
@@ -1078,16 +1078,16 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
 
   })(C.Construct);
 
-  C.PropertyAccess = (function(_super) {
+  C.ProperyAccess = (function(_super) {
 
-    __extends(PropertyAccess, _super);
+    __extends(ProperyAccess, _super);
 
-    function PropertyAccess(_arg) {
+    function ProperyAccess(_arg) {
       this.obj = _arg[0], this.props = 2 <= _arg.length ? __slice.call(_arg, 1) : [];
-      PropertyAccess.__super__.constructor.apply(this, arguments);
+      ProperyAccess.__super__.constructor.apply(this, arguments);
     }
 
-    PropertyAccess.prototype.compile = function() {
+    ProperyAccess.prototype.compile = function() {
       var base, c_prop, prop, _i, _len, _ref1, _results;
       base = this.obj._compile();
       _ref1 = this.props;
@@ -1104,7 +1104,7 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
       return _results;
     };
 
-    return PropertyAccess;
+    return ProperyAccess;
 
   })(C.Construct);
 
@@ -3827,7 +3827,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }).call(this);
 
 };// Your program
-var program_k25w_h5ly4xgq = null;
+var program_d07u_h5r1skvb = null;
 
 
 // Oppo runtime
@@ -4393,11 +4393,11 @@ re_test = function (re, s) {
         };
 
 // Run the oppo program
-if (lemur.core.to_type(program_k25w_h5ly4xgq) === 'function')
-  program_k25w_h5ly4xgq();
+if (lemur.core.to_type(program_d07u_h5r1skvb) === 'function')
+  program_d07u_h5r1skvb();
 else
-  program_k25w_h5ly4xgq;;// Your program
-var program_as21_h5ly4xg7 = function () {
+  program_d07u_h5r1skvb;;// Your program
+var program_22re_h5r1sktw = function () {
   var eval, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project;
 eval = __oppo_eval__;
   display_date = function (date) {
@@ -4421,7 +4421,7 @@ seconds = _$forwardslash_(n, 1000);
 };
   set_editable = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, _$in_, out, obj_kb1y_h5ly4xgc;
+  var el, row, time_in, time_out, _$in_, out, obj_4uwl_h5r1sku3;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
@@ -4431,7 +4431,7 @@ el = $(this);
   ($('.save-edits', row).show)();
   ($('.cancel-edits', row).show)();
   ($('.edit-timestamps', row).hide)();
-  ((time_in.add)(time_out).attr)((obj_kb1y_h5ly4xgc = { 'contenteditable': true }, obj_kb1y_h5ly4xgc));
+  ((time_in.add)(time_out).attr)((obj_4uwl_h5r1sku3 = { 'contenteditable': true }, obj_4uwl_h5r1sku3));
   (time_in.html)(_$in_);
   return (time_out.html)(out);
 }).call(this);
@@ -4482,7 +4482,7 @@ time_in_out = $('.time-in, .time-out');
   (time_in_out.each)(function (index, el) {
   return (function () {
   var d, $el;
-d = el['innerHTML'];
+d = ('innerHTML')(el);
   $el = $(el);
   (d ? (($el.html)(display_date(d)), ($el.attr)('data-value', d)) : null);
   return null;
@@ -4508,7 +4508,7 @@ el = $(this);
 
 
 // Run the oppo program
-if (lemur.core.to_type(program_as21_h5ly4xg7) === 'function')
-  program_as21_h5ly4xg7();
+if (lemur.core.to_type(program_22re_h5r1sktw) === 'function')
+  program_22re_h5r1sktw();
 else
-  program_as21_h5ly4xg7;
+  program_22re_h5r1sktw;

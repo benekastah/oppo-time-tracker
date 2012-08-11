@@ -66,7 +66,7 @@
 (.ready ($ document) (lambda ()
   (def time-in-out ($ ".time-in, .time-out"))
   (.each time-in-out (lambda (index el)
-    (let (d (@el :innerHTML)
+    (let (d (:innerHTML el)
           $el ($ el))
       (if d
         (do
