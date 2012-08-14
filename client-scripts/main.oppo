@@ -15,7 +15,7 @@
         n-hours (.getHours d)
         hours (leading-zero (if (> n-hours 12) (- n-hours 12) n-hours))
         minutes (leading-zero (.getMinutes d))
-        ampm (if (< n-hours  12) "am" "pm"))
+        ampm (if (< n-hours 12) "am" "pm"))
     (str month "/" date "/" year " " hours ":" minutes " " ampm)))
 
 (def (display-time-spent n)
