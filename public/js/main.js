@@ -1053,9 +1053,9 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
         pair = pairs[_i];
         if (pair != null) {
           if (pair instanceof C.List) {
-            pair.quoted = true;
+            pair = pair.items;
           }
-          this.property_value_pairs.push(eval(pair._compile()));
+          this.property_value_pairs.push(pair);
         }
       }
     }
@@ -1078,16 +1078,16 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
 
   })(C.Construct);
 
-  C.ProperyAccess = (function(_super) {
+  C.PropertyAccess = (function(_super) {
 
-    __extends(ProperyAccess, _super);
+    __extends(PropertyAccess, _super);
 
-    function ProperyAccess(_arg) {
+    function PropertyAccess(_arg) {
       this.obj = _arg[0], this.props = 2 <= _arg.length ? __slice.call(_arg, 1) : [];
-      ProperyAccess.__super__.constructor.apply(this, arguments);
+      PropertyAccess.__super__.constructor.apply(this, arguments);
     }
 
-    ProperyAccess.prototype.compile = function() {
+    PropertyAccess.prototype.compile = function() {
       var base, c_prop, prop, _i, _len, _ref1, _results;
       base = this.obj._compile();
       _ref1 = this.props;
@@ -1104,7 +1104,7 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
       return _results;
     };
 
-    return ProperyAccess;
+    return PropertyAccess;
 
   })(C.Construct);
 
@@ -1121,7 +1121,7 @@ if (typeof module !== 'undefined' && typeof require !== 'undefined') {
       var c_x, c_y;
       c_x = this.x._compile();
       c_y = this.y._compile();
-      return "" + c_x + " " + this.op + " " + c_y;
+      return "(" + c_x + " " + this.op + " " + c_y + ")";
     };
 
     return Operation;
@@ -3359,7 +3359,7 @@ if (typeof module !== 'undefined' && require.main === module) {
               arg = arguments[_i];
               if (typeof arg === "string") {
                 _results.push(arg);
-              } else if (arg.toString != null) {
+              } else if ((arg != null ? arg.toString : void 0) != null) {
                 _results.push(arg.toString());
               } else {
                 _results.push("" + arg);
@@ -3827,7 +3827,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }).call(this);
 
 };// Your program
-var program_j02u_h5u88lmd = null;
+var program_hfld_h5udv9o3 = null;
 
 
 // Oppo runtime
@@ -4366,7 +4366,7 @@ str = function () {
               arg = arguments[_i];
               if (typeof arg === "string") {
                 _results.push(arg);
-              } else if (arg.toString != null) {
+              } else if ((arg != null ? arg.toString : void 0) != null) {
                 _results.push(arg.toString());
               } else {
                 _results.push("" + arg);
@@ -4393,18 +4393,34 @@ re_test = function (re, s) {
         };
 
 // Run the oppo program
-if (lemur.core.to_type(program_j02u_h5u88lmd) === 'function')
-  program_j02u_h5u88lmd();
+if (lemur.core.to_type(program_hfld_h5udv9o3) === 'function')
+  program_hfld_h5udv9o3();
 else
-  program_j02u_h5u88lmd;;// Your program
-var program_b5vx_h5u88llr = function () {
-  var eval, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project, get_description;
+  program_hfld_h5udv9o3;;// Your program
+var program_icwv_h5udv9mw = function () {
+  var eval, leading_zero, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project, get_description;
 eval = __oppo_eval__;
-  display_date = function (date) {
+  leading_zero = function (n, digits) {
   return (function () {
-  var d;
-d = new Date(date);
-  return concat('', _$plus_(1, (d.getMonth)()), '/', (d.getDate)(), '/', (d.getFullYear)(), ' ', (d.getHours)(), ':', (d.getMinutes)());
+  var s_n, len, d;
+s_n = str(n);
+  len = s_n['length'];
+  d = (digits || 2);
+  return (_$rightangle__$equals_(len, d) ? s_n : leading_zero(str(0, s_n), d));
+}).call(this);
+};
+  display_date = function (date_string) {
+  return (function () {
+  var d, month, date, year, n_hours, hours, minutes, ampm;
+d = new Date(date_string);
+  month = leading_zero(_$plus_(1, (d.getMonth)()));
+  date = leading_zero((d.getDate)());
+  year = leading_zero((d.getFullYear)(), 4);
+  n_hours = (d.getHours)();
+  hours = leading_zero((_$rightangle_(n_hours, 12) ? _(n_hours, 12) : n_hours));
+  minutes = leading_zero((d.getMinutes)());
+  ampm = (_$leftangle_(n_hours, 12) ? 'am' : 'pm');
+  return str(month, '/', date, '/', year, ' ', hours, ':', minutes, ' ', ampm);
 }).call(this);
 };
   display_time_spent = function (n) {
@@ -4421,7 +4437,7 @@ seconds = _$forwardslash_(n, 1000);
 };
   set_editable = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, description, _$in_, out, obj_j97y_h5u88llv;
+  var el, row, time_in, time_out, description, _$in_, out, obj_fz28_h5udv9n4;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
@@ -4432,14 +4448,14 @@ el = $(this);
   ($('.save-edits', row).show)();
   ($('.cancel-edits', row).show)();
   ($('.edit-timestamps', row).hide)();
-  (((time_in.add)(time_out).add)(description).attr)((obj_j97y_h5u88llv = { 'contenteditable': true }, obj_j97y_h5u88llv));
+  (((time_in.add)(time_out).add)(description).attr)((obj_fz28_h5udv9n4 = { 'contenteditable': true }, obj_fz28_h5udv9n4));
   (time_in.html)(_$in_);
   return (time_out.html)(out);
 }).call(this);
 };
   edit_timestamps = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, description, id, _$in_, out, desc, obj_invg_h5u88llx;
+  var el, row, time_in, time_out, description, id, _$in_, out, desc, obj_l32x_h5udv9n7;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
@@ -4450,7 +4466,7 @@ el = $(this);
   out = encodeURIComponent((time_out.html)());
   desc = (description.html)();
   puts(id, _$in_, out);
-  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out), (obj_invg_h5u88llx = { 'description': desc }, obj_invg_h5u88llx), reload);
+  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out), (obj_l32x_h5udv9n7 = { 'description': desc }, obj_l32x_h5udv9n7), reload);
 }).call(this);
 };
   delete_timestamps = function (evt) {
@@ -4485,7 +4501,7 @@ really_$questionmark_ = confirm('Are you sure you want to delete this project? T
 _$this_ = this;
   punching_in = Number(($('[name=punching-in]', _$this_).val)());
   description = (!punching_in ? prompt('What did you work on during this time?') : '');
-  return (!punching_in && !description ? (evt.preventDefault)() : ($('[name=description]', _$this_).val)(description));
+  return ((!punching_in && !description) ? (evt.preventDefault)() : ($('[name=description]', _$this_).val)(description));
 }).call(this);
 };
   return ($(document).ready)(function () {
@@ -4521,7 +4537,7 @@ el = $(this);
 
 
 // Run the oppo program
-if (lemur.core.to_type(program_b5vx_h5u88llr) === 'function')
-  program_b5vx_h5u88llr();
+if (lemur.core.to_type(program_icwv_h5udv9mw) === 'function')
+  program_icwv_h5udv9mw();
 else
-  program_b5vx_h5u88llr;
+  program_icwv_h5udv9mw;

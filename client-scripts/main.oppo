@@ -1,7 +1,22 @@
 
-(def (display-date date)
-  (let (d (new Date date))
-    (concat "" (+ 1 (.getMonth d)) "/" (.getDate d) "/" (.getFullYear d) " " (.getHours d) ":" (.getMinutes d))))
+(def (leading-zero n digits)
+  (let (s-n (str n)
+        len (@s-n :length)
+        d (or digits 2))
+    (if (>= len d)
+      s-n
+      (leading-zero (str 0 s-n) d))))
+
+(def (display-date date-string)
+  (let (d (new Date date-string)
+        month (leading-zero (+ 1 (.getMonth d)))
+        date (leading-zero (.getDate d))
+        year (leading-zero (.getFullYear d) 4)
+        n-hours (.getHours d)
+        hours (leading-zero (if (> n-hours 12) (- n-hours 12) n-hours))
+        minutes (leading-zero (.getMinutes d))
+        ampm (if (< n-hours 12) "am" "pm"))
+    (str month "/" date "/" year " " hours ":" minutes " " ampm)))
 
 (def (display-time-spent n)
   (let (seconds (/ n 1000)
