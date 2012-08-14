@@ -1,20 +1,19 @@
 
 (def (leading-zero n digits)
   (let (s-n (str n)
-        len (@s-n :length)
-        d (or digits 2))
-    (if (>= len d)
+        len (@s-n :length))
+    (if (>= len digits)
       s-n
-      (leading-zero (str 0 s-n) d))))
+      (leading-zero (str 0 s-n) digits))))
 
 (def (display-date date-string)
   (let (d (new Date date-string)
-        month (leading-zero (+ 1 (.getMonth d)))
-        date (leading-zero (.getDate d))
+        month (leading-zero (+ 1 (.getMonth d)) 2)
+        date (leading-zero (.getDate d) 2)
         year (leading-zero (.getFullYear d) 4)
         n-hours (.getHours d)
-        hours (leading-zero (if (> n-hours 12) (- n-hours 12) n-hours))
-        minutes (leading-zero (.getMinutes d))
+        hours (leading-zero (if (> n-hours 12) (- n-hours 12) n-hours) 2)
+        minutes (leading-zero (.getMinutes d) 2)
         ampm (if (< n-hours 12) "am" "pm"))
     (str month "/" date "/" year " " hours ":" minutes " " ampm)))
 
