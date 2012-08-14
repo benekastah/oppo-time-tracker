@@ -3827,7 +3827,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }).call(this);
 
 };// Your program
-var program_ixwh_h5r2jtij = null;
+var program_j02u_h5u88lmd = null;
 
 
 // Oppo runtime
@@ -4393,12 +4393,12 @@ re_test = function (re, s) {
         };
 
 // Run the oppo program
-if (lemur.core.to_type(program_ixwh_h5r2jtij) === 'function')
-  program_ixwh_h5r2jtij();
+if (lemur.core.to_type(program_j02u_h5u88lmd) === 'function')
+  program_j02u_h5u88lmd();
 else
-  program_ixwh_h5r2jtij;;// Your program
-var program_9pf3_h5r2jthr = function () {
-  var eval, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project;
+  program_j02u_h5u88lmd;;// Your program
+var program_b5vx_h5u88llr = function () {
+  var eval, display_date, display_time_spent, reload, set_editable, edit_timestamps, delete_timestamps, create_project, delete_project, get_description;
 eval = __oppo_eval__;
   display_date = function (date) {
   return (function () {
@@ -4421,7 +4421,7 @@ seconds = _$forwardslash_(n, 1000);
 };
   set_editable = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, description, _$in_, out, obj_5qs1_h5r2jthz;
+  var el, row, time_in, time_out, description, _$in_, out, obj_j97y_h5u88llv;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
@@ -4432,14 +4432,14 @@ el = $(this);
   ($('.save-edits', row).show)();
   ($('.cancel-edits', row).show)();
   ($('.edit-timestamps', row).hide)();
-  ((time_in.add)(time_out, description).attr)((obj_5qs1_h5r2jthz = { 'contenteditable': true }, obj_5qs1_h5r2jthz));
+  (((time_in.add)(time_out).add)(description).attr)((obj_j97y_h5u88llv = { 'contenteditable': true }, obj_j97y_h5u88llv));
   (time_in.html)(_$in_);
   return (time_out.html)(out);
 }).call(this);
 };
   edit_timestamps = function (evt) {
   return (function () {
-  var el, row, time_in, time_out, description, id, _$in_, out, desc;
+  var el, row, time_in, time_out, description, id, _$in_, out, desc, obj_invg_h5u88llx;
 el = $(this);
   row = (el.parents)('tr:first');
   time_in = $('.time-in', row);
@@ -4448,9 +4448,9 @@ el = $(this);
   id = (row.data)('id');
   _$in_ = encodeURIComponent((time_in.html)());
   out = encodeURIComponent((time_out.html)());
-  desc = encodeURIComponent((description.html)());
+  desc = (description.html)();
   puts(id, _$in_, out);
-  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out, '/', desc), reload);
+  return ($.post)(concat('/update-timestamps/', id, '/', _$in_, '/', out), (obj_invg_h5u88llx = { 'description': desc }, obj_invg_h5u88llx), reload);
 }).call(this);
 };
   delete_timestamps = function (evt) {
@@ -4479,6 +4479,15 @@ really_$questionmark_ = confirm('Are you sure you want to delete this project? T
   return (really_$questionmark_ ? ($.post)(concat('/delete-project/', id), reload) : null);
 }).call(this);
 };
+  get_description = function (evt) {
+  return (function () {
+  var _$this_, punching_in, description;
+_$this_ = this;
+  punching_in = Number(($('[name=punching-in]', _$this_).val)());
+  description = (!punching_in ? prompt('What did you work on during this time?') : '');
+  return (!punching_in && !description ? (evt.preventDefault)() : ($('[name=description]', _$this_).val)(description));
+}).call(this);
+};
   return ($(document).ready)(function () {
   var time_in_out, time_spent;
 time_in_out = $('.time-in, .time-out');
@@ -4499,6 +4508,7 @@ el = $(this);
   return (el.html)(display_time_spent((el.html)()));
 }).call(this);
 });
+  ($('form.punch-in-out-form').submit)(get_description);
   ($('.edit-timestamps').click)(set_editable);
   ($('.delete-timestamps').click)(delete_timestamps);
   ($('.save-edits').click)(edit_timestamps);
@@ -4511,7 +4521,7 @@ el = $(this);
 
 
 // Run the oppo program
-if (lemur.core.to_type(program_9pf3_h5r2jthr) === 'function')
-  program_9pf3_h5r2jthr();
+if (lemur.core.to_type(program_b5vx_h5u88llr) === 'function')
+  program_b5vx_h5u88llr();
 else
-  program_9pf3_h5r2jthr;
+  program_b5vx_h5u88llr;

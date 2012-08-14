@@ -22,7 +22,7 @@
     (.show ($ ".save-edits" row))
     (.show ($ ".cancel-edits" row))
     (.hide ($ ".edit-timestamps" row))
-    (.attr (.add time-in time-out description) {:contenteditable true})
+    (.attr (.add (.add time-in time-out) description) {:contenteditable true})
     (.html time-in in)
     (.html time-out out)))
 
@@ -35,10 +35,11 @@
         id (.data row :id)
         in (encodeURIComponent (.html time-in))
         out (encodeURIComponent (.html time-out))
-        desc (encodeURIComponent (.html description)))
+        desc (.html description))
     (puts id in out)
     (.post $
-      (concat "/update-timestamps/" id "/" in "/" out "/" desc)
+      (concat "/update-timestamps/" id "/" in "/" out)
+      {:description desc}
       reload)))
 
 (def (delete-timestamps evt)
@@ -66,6 +67,14 @@
         (concat "/delete-project/" id)
         reload))))
 
+(def (get-description evt)
+  (let (this (js-eval :this)
+        punching-in (Number (.val ($ "[name=punching-in]" this)))
+        description (if (not punching-in) (prompt "What did you work on during this time?") ""))
+    (if (and (not punching-in) (not description))
+      (.preventDefault evt)
+      (.val ($ "[name=description]" this) description))))
+
 (.ready ($ document) (lambda ()
   (def time-in-out ($ ".time-in, .time-out"))
   (.each time-in-out (lambda (index el)
@@ -81,6 +90,7 @@
     (let (el ($ (js-eval :this)))
       (.html el (display-time-spent (.html el))))))
 
+  (.submit ($ "form.punch-in-out-form") get-description)
   (.click ($ ".edit-timestamps") set-editable)
   (.click ($ ".delete-timestamps") delete-timestamps)
   (.click ($ ".save-edits") edit-timestamps)
