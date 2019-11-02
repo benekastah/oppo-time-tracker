@@ -10,7 +10,7 @@
     , "url": ""
   }
   , "dependencies": {
-      "express": "2.x.x",
+      "express": "4.x.x",
       "sqlite3": "2.x.x",
       "jade": "0.x.x",
       "mkdirp": "0.x.x"
